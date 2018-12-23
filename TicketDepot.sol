@@ -63,12 +63,27 @@ contract TicketDepot {
    function offerTicket(uint16 _eventID, uint16 _ticketID, uint64 _price, address _buyer, uint16 _offerWindow) {
        // Позволяет владельцу билета выставить свой билет на продажу по цене _price в течение _offerWindow блоков
        bytes32 offerID = sha3(_eventID + _ticketID); // Подсказка: рекомендую использовать вот такой offerID
+       require(
+           events[_eventID].attendees[_ticketID] == _buyer,
+           "Yoy can't sell this ticket."
+           );
+       offerings[offerID] = Offering(_buyer, _price, (block.number + _offerWindow));
    }
 
    function buyOfferedTicket(uint16 _eventID, uint16 _ticketID, address _newAttendee) payable {
        // Позволяет купить билет, если продажа еще не закончилась и переведенная сумма достаточная.
        // Обновляет значение attendee, указывая нового вместо старого, а также сразу переводит деньги продавцу
        bytes32 offerID = sha3(_eventID + _ticketID);
+       require(
+           block.number <= offerings[offerID].deadline,
+           "Time is over."
+           );
+       require(
+           msg.value >= (transactionFee + offerings[offerID].price),
+           "Not enough money."
+           );
+        events[_eventID].attendees[_ticketID] = _newAttendee;
+        offerings[offerID].buyer.transfer(msg.value);
    } 
  
 }
