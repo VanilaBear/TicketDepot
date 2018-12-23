@@ -37,9 +37,16 @@ contract TicketDepot {
        // то _attendee в attendees соответствующего event. Уменьшает количество доступных билетов.
        // Сразу переводит деньги owner мероприятия.
        require(
-          _price >= (events[_eventID].ticketPrice + transactionFee),
-          "Not enough money."
-          );
+            msg.value >= (events[_eventID].ticketPrice + transactionFee),
+            "Not enough money."
+            );
+        require(
+            events[_eventID].ticketsRemaining > 0,
+            "No more tickets."
+            );
+        events[_eventID].attendees[ticketID] = _attendee;
+        events[_eventID].ticketsRemaining--;
+        events[_eventID].owner.transfer(msg.value);
    }
 
 
