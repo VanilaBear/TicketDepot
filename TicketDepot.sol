@@ -33,7 +33,7 @@ contract TicketDepot {
            );
        
        eventID = numEvents++;
-       events[eventID] = Event(owner, _ticketPrice, _ticketsAvailable)
+       events[eventID] = Event(owner, _ticketPrice, _ticketsAvailable);
    }
    
    function buyNewTicket(uint16 _eventID, address _attendee) payable returns (uint16 ticketID) {
