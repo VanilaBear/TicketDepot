@@ -44,6 +44,7 @@ contract TicketDepot {
             events[_eventID].ticketsRemaining > 0,
             "No more tickets."
             );
+        ticketID = events[_eventID].ticketsRemaining;
         events[_eventID].attendees[ticketID] = _attendee;
         events[_eventID].ticketsRemaining--;
         events[_eventID].owner.transfer(msg.value);
