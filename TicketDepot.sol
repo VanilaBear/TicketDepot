@@ -14,7 +14,7 @@ contract TicketDepot {
    uint64 transactionFee;
    mapping(uint16 => Event) events;
 
-   function ticketDepot(uint64 _transactionFee) {
+   construcror (uint64 _transactionFee) paybale public {
        // Конструктор конктракта. Устанавливает transactionFee и owner
        owner = msg.sender;
        transactionFee = _transactionFee;
@@ -28,8 +28,9 @@ contract TicketDepot {
            "Some tickets are needed."
            );
        
-       eventID = numEvents++;
+       eventID = numEvents;
        events[eventID] = Event(owner, _ticketPrice, _ticketsAvailable);
+       numEvents++;
    }
    
    function buyNewTicket(uint16 _eventID, address _attendee) payable returns (uint16 ticketID) {
