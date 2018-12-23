@@ -84,6 +84,7 @@ contract TicketDepot {
            );
         events[_eventID].attendees[_ticketID] = _newAttendee;
         offerings[offerID].buyer.transfer(msg.value);
+        offerings[offerID].deadline = 0;
    } 
  
 }
