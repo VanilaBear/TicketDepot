@@ -18,10 +18,22 @@ contract TicketDepot {
        // Конструктор конктракта. Устанавливает transactionFee и owner
        owner = msg.sender;
        transactionFee = _transactionFee;
+       numEvents = 0;
    }
    
    function createEvent(uint64 _ticketPrice, uint16 _ticketsAvailable) returns (uint16 eventID) {
        // Создает мероприятие с _ticketsAvailable билетами по цене _ticketPrice, а также устанавливает owner мероприятия
+       require(
+           _ticketsAvailable > 0,
+           "Some tickets are needed."
+           );
+       require(
+           _ticketPrice >= 0,
+           "Price must be non-negative."
+           );
+       
+       eventID = numEvents++;
+       events[eventID] = Event(owner, _ticketPrice, _ticketsAvailable)
    }
    
    function buyNewTicket(uint16 _eventID, address _attendee) payable returns (uint16 ticketID) {
