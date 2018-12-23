@@ -27,10 +27,6 @@ contract TicketDepot {
            _ticketsAvailable > 0,
            "Some tickets are needed."
            );
-       require(
-           _ticketPrice >= 0,
-           "Price must be non-negative."
-           );
        
        eventID = numEvents++;
        events[eventID] = Event(owner, _ticketPrice, _ticketsAvailable);
@@ -40,6 +36,10 @@ contract TicketDepot {
        // Позволяет купить билет: если послано достаточно денег, чтобы оплатить комиссию владельца контракта + сам билет,
        // то _attendee в attendees соответствующего event. Уменьшает количество доступных билетов.
        // Сразу переводит деньги owner мероприятия.
+       require(
+          _price >= (events[_eventID].ticketPrice + transactionFee),
+          "Not enough money."
+          );
    }
 
 
